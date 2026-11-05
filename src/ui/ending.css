@@ -115,7 +115,7 @@ button:disabled {
 }
 .ending-screen pre {
   font:
-    clamp(10px, 1.2vw, 16px)/1.9 Consolas,
+    clamp(10px, 1.2vw, 16px) / 1.9 Consolas,
     monospace;
   color: #bed8de;
   white-space: pre-wrap;
@@ -129,14 +129,29 @@ button:disabled {
   left: 0;
   right: 0;
   padding: 12px 20px;
-  font: 14px/1.5 Consolas, "Microsoft YaHei", monospace;
+  font:
+    14px/1.5 Consolas,
+    "Microsoft YaHei",
+    monospace;
   color: #d3e0e5;
   background: #17202a99;
 }
-.ending-screen-header { top: 0; border-bottom: 1px solid #8297b855; }
-.ending-screen-prompt { bottom: 35px; border-top: 1px solid #8297b855; }
-.ending-screen-status { bottom: 0; padding-block: 7px; font-size: 11px; }
-.ending-screen pre { margin: 62px 28px 90px; }
+.ending-screen-header {
+  top: 0;
+  border-bottom: 1px solid #8297b855;
+}
+.ending-screen-prompt {
+  bottom: 35px;
+  border-top: 1px solid #8297b855;
+}
+.ending-screen-status {
+  bottom: 0;
+  padding-block: 7px;
+  font-size: 11px;
+}
+.ending-screen pre {
+  margin: 62px 28px 90px;
+}
 .ending-avatar,
 .ending-human {
   position: absolute;
@@ -257,7 +272,7 @@ button:disabled {
   display: flex;
   gap: clamp(9px, 2.5vw, 40px);
   align-items: center;
-  font: 300 clamp(15px, 3.8vw, 53px)/1.3 sans-serif;
+  font: 300 clamp(15px, 3.8vw, 53px) / 1.3 sans-serif;
   letter-spacing: 0.12em;
   white-space: nowrap;
 }
@@ -437,4 +452,74 @@ button:disabled {
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 0 24px #607d9b44);
+}
+/* v0.1.1: a seated scene viewed through the display, not a floating standee. */
+.ending-observer {
+  position: absolute;
+  z-index: 10;
+  background: #050912;
+  overflow: hidden;
+  border: 1px solid #95bec82b;
+  box-sizing: border-box;
+  transform-origin: center;
+}
+.ending-observer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  box-shadow: inset 0 0 7vw #02071066;
+  background: linear-gradient(
+    115deg,
+    #b6dbff07,
+    transparent 28%,
+    transparent 76%,
+    #a1c9ff08
+  );
+}
+.ending-observer > .ending-avatar,
+.ending-observer > .ending-human {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center 42%;
+  transform: none;
+  animation: none;
+  filter: none;
+  border-radius: 0;
+}
+.ending-observer > .ending-human {
+  object-fit: contain;
+  background: #050912;
+}
+.ending-observer > [hidden] {
+  display: none !important;
+}
+.ending-observer > .ending-screen {
+  inset: 0;
+  background: #081018b8;
+  border: none;
+  box-shadow: none;
+  transform: scaleX(-1);
+}
+.ending-room {
+  transform-origin: 0 0;
+}
+.ending-controls {
+  opacity: 0.08;
+  transition: opacity 180ms ease;
+}
+.ending-controls:hover,
+.ending-controls:focus-within,
+.ending-finished .ending-controls {
+  opacity: 1;
+}
+@media (hover: none) {
+  .ending-controls {
+    opacity: 0.8;
+  }
 }

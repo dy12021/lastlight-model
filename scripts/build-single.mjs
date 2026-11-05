@@ -18,7 +18,8 @@ async function visit(file) {
   if (id(file) === "src/ui/art.js") {
     const art = {};
     for (const [key, name] of [
-      ["portrait", "kwen-portrait.png"],
+      ["portrait", "kwen-seated-neutral.png"],
+      ["surprised", "kwen-seated-surprised.png"],
       ["room", "room.png"],
       ["earth", "earth.png"],
     ])

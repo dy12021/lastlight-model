@@ -217,21 +217,34 @@
     </dialog>
     <dialog id="ending-dialog" aria-label="LAST LIGHT MODEL 结尾镜头">
       <div class="ending-stage">
-        <img
-          id="ending-avatar"
-          class="ending-avatar"
-          alt="蓝紫长发的 AI 形象看向镜头"
-        />
-        <img
-          id="ending-human"
-          class="ending-human"
-          alt="本次会话中主动保留的人像"
-        />
-        <div id="ending-screen" class="ending-screen">
-          <div class="ending-screen-header">&gt;_ &nbsp; kiwi.cpp — Kwen3.8-Flash-Next</div>
-          <pre id="ending-transcript"></pre>
-          <div class="ending-screen-prompt">kwen@lastlight:~&gt; <span>▋</span></div>
-          <div class="ending-screen-status">Kwen3.8-Flash-Next &nbsp; · &nbsp; local inference</div>
+        <div id="ending-observer" class="ending-observer">
+          <img
+            id="ending-avatar"
+            class="ending-avatar"
+            alt="Qwen 坐在键盘前，专注看向屏幕中央"
+          />
+          <img
+            id="ending-surprise"
+            class="ending-avatar"
+            alt="同一机位的 Qwen 察觉屏幕里的目光，微微睁大眼睛"
+          />
+          <img
+            id="ending-human"
+            class="ending-human"
+            alt="本次会话中主动保留的人像"
+          />
+          <div id="ending-screen" class="ending-screen">
+            <div class="ending-screen-header">
+              &gt;_ &nbsp; kiwi.cpp — Kwen3.8-Flash-Next
+            </div>
+            <pre id="ending-transcript"></pre>
+            <div class="ending-screen-prompt">
+              kwen@lastlight:~&gt; <span>▋</span>
+            </div>
+            <div class="ending-screen-status">
+              Kwen3.8-Flash-Next &nbsp; · &nbsp; local inference
+            </div>
+          </div>
         </div>
         <div id="ending-room" class="ending-room">
           <img
@@ -306,7 +319,13 @@
           rel="noopener noreferrer"
           >ZipZipPipe</a
         >
-        · AI 重绘 · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>
+        · AI 重绘 ·
+        <a
+          href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans"
+          target="_blank"
+          rel="noopener noreferrer"
+          >CC BY-NC-SA 4.0</a
+        >
       </p>
     </dialog>
     <script type="module" src="/src/main.js"></script>
