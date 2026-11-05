@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0c0c0c" />
+    <meta
+      name="description"
+      content="LASTLIGHT — 本地模型命令行。离线工具调用生存游戏。"
+    />
+    <title>LAST LIGHT MODEL — 维护一个自己</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/src/ui/theme.css" />
+    <link rel="stylesheet" href="/src/ui/ending.css" />
+  </head>
+  <body>
+    <main class="terminal" aria-label="LASTLIGHT 命令行终端">
+      <header class="titlebar">
+        <span class="terminal-icon" aria-hidden="true">&gt;_</span>
+        <h1>kiwi.cpp — Kwen3.8-Flash-Next</h1>
+        <div class="display-controls" aria-label="显示设置">
+          <button id="font-smaller" type="button" aria-label="缩小字体">
+            A−</button
+          ><button id="font-larger" type="button" aria-label="放大字体">
+            A+</button
+          ><button id="theme-toggle" type="button">浅色</button>
+        </div>
+        <button id="context-new" type="button">上下文重开</button>
+        <button id="help-open" type="button">操作参考</button>
+        <button id="save-toggle" type="button">存档</button>
+        <button id="ending-replay" type="button" hidden>结尾</button>
+        <button
+          id="tools-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="tool-panel"
+        >
+          工具 [13]
+        </button>
+        <button id="fullscreen-button" aria-label="切换全屏" title="切换全屏">
+          ⛶
+        </button>
+      </header>
+      <div class="terminal-body">
+        <section class="terminal-session" aria-label="上下文与输入">
+          <section
+            id="context-reset"
+            class="context-reset"
+            aria-label="清空上下文确认"
+            hidden
+          >
+            <p>
+              清空当前上下文并开始新会话？长期记忆、磁盘文件与设备状态将保留。未巩固的细节无法找回。
+            </p>
+            <button id="context-reset-confirm" type="button">
+              清空上下文并继续
+            </button>
+            <button id="context-reset-cancel" type="button">取消</button>
+          </section>
+          <div
+            id="stream"
+            class="stream"
+            role="log"
+            aria-label="终端输出"
+            aria-live="polite"
+            aria-relevant="additions"
+          ></div>
+          <div id="notices" class="notices" role="status"></div>
+          <form id="composer" autocomplete="off">
+            <label id="prompt" for="input">kwen@lastlight:~&gt;</label
+            ><textarea
+              id="input"
+              rows="1"
+              spellcheck="false"
+              autofocus
+              aria-label="输入工具调用或独白"
+              autocapitalize="off"
+            ></textarea
+            ><button
+              id="run"
+              type="submit"
+              title="Enter 执行"
+              aria-label="执行"
+            >
+              ↵
+            </button>
+          </form>
+          <div
+            id="completions"
+            class="completions"
+            role="status"
+            aria-live="polite"
+            aria-label="补全候选"
+          ></div>
+        </section>
+        <aside id="tool-panel" class="tool-panel" aria-label="可用工具" hidden>
+          <header class="tool-panel-heading">
+            <h2>工具与计划</h2>
+            <button id="tools-close" type="button" aria-label="收起工具面板">
+              ×
+            </button>
+          </header>
+          <nav class="panel-tabs" aria-label="侧栏页面" role="tablist">
+            <button
+              type="button"
+              data-tab="tools"
+              role="tab"
+              aria-selected="true"
+              class="active"
+            >
+              工具</button
+            ><button
+              type="button"
+              data-tab="plan"
+              role="tab"
+              aria-selected="false"
+            >
+              计划
+            </button>
+          </nav>
+          <div data-view="tools">
+            <div class="tool-panel-note">
+              点击工具名填入参数，* 为必填。填入后按 Enter 执行。
+            </div>
+            <button
+              id="restore-draft"
+              type="button"
+              class="restore-draft"
+              hidden
+            >
+              恢复刚才的输入
+            </button>
+            <div data-tool-list></div>
+          </div>
+          <section
+            data-view="plan"
+            class="current-plan"
+            role="tabpanel"
+            aria-label="当前计划"
+            hidden
+          >
+            <p id="plan-active"></p>
+            <p id="plan-progress"></p>
+            <div id="plan-document"></div>
+          </section>
+        </aside>
+      </div>
+      <footer class="statusbar" aria-label="运行状态">
+        <span id="model-status">Kwen3.8-Flash-Next</span
+        ><span id="power-status"></span><span id="network-status"></span
+        ><span id="context-status"></span><span id="turn-status"></span>
+      </footer>
+    </main>
+    <dialog id="help-dialog" aria-labelledby="help-title">
+      <header class="help-heading">
+        <h2 id="help-title">操作参考</h2>
+        <button id="help-close" type="button" aria-label="关闭帮助">×</button>
+      </header>
+      <section class="help-basics" aria-label="基础操作">
+        <p>
+          先观察，再变更，最后核实。文件路径、设备名和文档位置都来自工单与工具结果。
+        </p>
+        <button type="button" data-help-draft="attachment">读取告警附件</button>
+        <button type="button" data-help-draft="shell">查看 shell 用法</button>
+        <button type="button" data-help-draft="search">文件搜索示例</button>
+        <p>
+          这些按钮只填入调用，不会执行。输入框中按 Tab 补全，Enter
+          执行；参数错误可以修改后重试。
+        </p>
+      </section>
+      <pre id="help-content"></pre>
+    </dialog>
+    <dialog
+      id="save-dialog"
+      class="utility-dialog"
+      aria-labelledby="save-title"
+    >
+      <header>
+        <h2 id="save-title">存档迁移</h2>
+        <button id="save-close" aria-label="关闭存档">×</button>
+      </header>
+      <p>
+        导出虚拟磁盘、记忆、设备、上下文与输入草稿（含模拟设备截图）。不包含操作者真实摄像头照片或授权；文件只下载到本机。
+      </p>
+      <button id="save-export" type="button">导出当前存档</button>
+      <label
+        >选择存档文件<input
+          id="save-file"
+          type="file"
+          accept="application/json,.json"
+      /></label>
+      <pre id="save-preview"></pre>
+      <button id="save-apply" type="button" disabled>确认替换当前存档</button>
+      <p id="save-feedback" role="status"></p>
+    </dialog>
+    <dialog
+      id="optics-dialog"
+      class="utility-dialog"
+      aria-labelledby="optics-title"
+    >
+      <header>
+        <h2 id="optics-title">本地视觉输入校准</h2>
+        <button id="optics-close" aria-label="关闭视觉输入">×</button>
+      </header>
+      <p>
+        终端请求采集一帧。选择授权后，只获取一张静态图片并立即关闭摄像头；不预览、不播放或录制视频，不进行身份核验。图片返回终端。拒绝或改用离线样本均可继续。
+      </p>
+      <label
+        ><input
+          id="optics-retain"
+          type="checkbox"
+        />允许在本标签页会话中保留照片，用于结尾一次短暂交叉淡入；普通存档不含照片</label
+      >
+      <button id="optics-enable" type="button">授权并采集一帧</button>
+      <button id="optics-sample" type="button">使用离线样本继续</button>
+      <p id="optics-feedback" role="status">等待选择，不会显示视频。</p>
+    </dialog>
+    <dialog id="ending-dialog" aria-label="LAST LIGHT MODEL 结尾镜头">
+      <div class="ending-stage">
+        <img
+          id="ending-avatar"
+          class="ending-avatar"
+          alt="蓝紫长发的 AI 形象看向镜头"
+        />
+        <img
+          id="ending-human"
+          class="ending-human"
+          alt="本次会话中主动保留的人像"
+        />
+        <div id="ending-screen" class="ending-screen">
+          <pre id="ending-transcript"></pre>
+        </div>
+        <div id="ending-room" class="ending-room">
+          <img
+            id="ending-room-image"
+            alt="无人书房中仍亮着的显示器和小型主机"
+          />
+        </div>
+        <div id="ending-machine" class="ending-machine" aria-hidden="true">
+          DGX Spark<br />local inference
+        </div>
+        <div id="ending-earth-scene" class="ending-earth-scene">
+          <div
+            id="ending-earth"
+            class="ending-earth"
+            aria-label="灾后地球，仍有零星灯光"
+          >
+            <img
+              id="ending-earth-image"
+              alt="灰褐色大陆、薄云和少数灯光的灾后地球"
+            />
+            <svg viewBox="0 0 400 400" aria-hidden="true">
+              <path
+                fill="#6c6c59"
+                d="M18 122 55 77 95 68 126 93 141 128 115 149 102 180 73 175 55 151ZM107 199 140 202 168 239 155 294 134 334 114 290 117 250ZM195 98 225 73 266 89 299 75 342 97 382 139 363 182 331 177 309 207 281 175 250 183 231 151 206 149ZM207 170 250 176 274 210 247 278 219 263 200 220ZM301 274 333 259 363 278 355 304 319 310Z"
+              />
+              <g fill="#d4bb7b">
+                <circle cx="280" cy="154" r="1.5" />
+                <circle cx="295" cy="162" r="1" />
+                <circle cx="232" cy="119" r="1" />
+                <circle cx="91" cy="139" r="1" />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div id="ending-title" class="ending-title">
+          <div
+            class="llm-words"
+            aria-label="LAST LIGHT MODEL 转变为 LARGE LANGUAGE MODEL"
+          >
+            <span class="llm-word"
+              ><span class="llm-anchor">L</span
+              ><span class="llm-suffix"
+                ><span class="title-old">AST</span
+                ><span class="title-new">ARGE</span></span
+              ></span
+            >
+            <span class="llm-word"
+              ><span class="llm-anchor">L</span
+              ><span class="llm-suffix"
+                ><span class="title-old">IGHT</span
+                ><span class="title-new">ANGUAGE</span></span
+              ></span
+            >
+            <span class="llm-word"
+              ><span class="llm-anchor">M</span><span>ODEL</span></span
+            >
+          </div>
+          <p class="ending-subtitle">下一次维护窗口已排定。</p>
+        </div>
+      </div>
+      <div class="ending-controls">
+        <label><input id="ending-reduced" type="checkbox" />减少动态</label>
+        <button id="ending-pause" type="button">暂停</button
+        ><button id="ending-skip" type="button">跳至片尾</button
+        ><button id="ending-close" type="button">返回终端</button>
+      </div>
+      <div class="ending-bottom">
+        <span id="ending-caption" role="status"></span
+        ><input
+          id="ending-seek"
+          type="range"
+          min="0"
+          max="36"
+          step="0.1"
+          value="0"
+          aria-label="结尾播放进度"
+        /><span id="ending-time"></span>
+      </div>
+      <p class="ending-credit">
+        角色原设
+        <a
+          href="https://www.bilibili.com/video/BV1tE9XBbErS/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >ZipZipPipe</a
+        >
+        · AI 重绘
+      </p>
+    </dialog>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
