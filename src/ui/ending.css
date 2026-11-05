@@ -122,6 +122,21 @@ button:disabled {
   opacity: 0.6;
   margin: 28px;
 }
+.ending-screen-header,
+.ending-screen-prompt,
+.ending-screen-status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 12px 20px;
+  font: 14px/1.5 Consolas, "Microsoft YaHei", monospace;
+  color: #d3e0e5;
+  background: #17202a99;
+}
+.ending-screen-header { top: 0; border-bottom: 1px solid #8297b855; }
+.ending-screen-prompt { bottom: 35px; border-top: 1px solid #8297b855; }
+.ending-screen-status { bottom: 0; padding-block: 7px; font-size: 11px; }
+.ending-screen pre { margin: 62px 28px 90px; }
 .ending-avatar,
 .ending-human {
   position: absolute;

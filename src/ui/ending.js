@@ -15,7 +15,7 @@ export function endingFrame(seconds, reduced = false) {
             : t < 28
               ? "earth"
               : "title",
-    flip: reduced ? 0 : 180 * clamp(t / 4),
+    flip: reduced ? (t < 2 ? 0 : 180) : 180 * clamp(t / 4),
     portrait: clamp((t - 2) / 2),
     photo: !reduced && t >= 10.8 && t < 11.25,
     room: clamp((t - 12) / 3) * (1 - clamp((t - 23) / 3)),
@@ -37,13 +37,6 @@ export function mountEnding({ getPortrait, getTranscript, isAvailable }) {
     "(prefers-reduced-motion: reduce)",
   ).matches;
   const reduced = () => $("ending-reduced").checked;
-  const captions = {
-    inside: "屏幕内部",
-    observer: "光学输入 / 本地会话",
-    room: "仍在运行的房间",
-    earth: "一次局部维护，仍在继续",
-    title: "下一次维护窗口已排定。",
-  };
   function render() {
     const f = endingFrame(elapsed, reduced()),
       photo = !!getPortrait() && f.photo;
@@ -66,10 +59,6 @@ export function mountEnding({ getPortrait, getTranscript, isAvailable }) {
       el.style.opacity = 1 - f.morph;
     for (const el of dialog.querySelectorAll(".title-new"))
       el.style.opacity = f.morph;
-    $("ending-caption").textContent = captions[f.stage];
-    $("ending-seek").value = elapsed;
-    $("ending-time").textContent =
-      Math.floor(elapsed) + " / " + ENDING_DURATION + "s";
     if (elapsed >= ENDING_DURATION) {
       paused = true;
       $("ending-pause").textContent = "继续";
@@ -112,11 +101,6 @@ export function mountEnding({ getPortrait, getTranscript, isAvailable }) {
   };
   $("ending-skip").onclick = () => {
     elapsed = ENDING_DURATION;
-    render();
-  };
-  $("ending-seek").oninput = () => {
-    elapsed = Number($("ending-seek").value);
-    last = 0;
     render();
   };
   dialog.addEventListener("close", () => {
