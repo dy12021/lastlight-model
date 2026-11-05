@@ -114,6 +114,8 @@ test("camera adapter is explicitly invoked, requests no audio and stops every tr
 test("ending uses one photo interval, reaches the title, and respects reduced motion", () => {
   assert.equal(endingFrame(0).stage, "inside");
   assert.equal(endingFrame(7).stage, "observer");
+  assert.equal(endingFrame(7).flip, 180);
+  assert.equal(endingFrame(7, true).flip, 180);
   assert.equal(endingFrame(10.9).photo, true);
   assert.equal(endingFrame(11.3).photo, false);
   assert.equal(endingFrame(10.9, true).photo, false);
